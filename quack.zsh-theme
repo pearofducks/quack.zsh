@@ -2,7 +2,11 @@ prompt_end() {
   if [[ $UID -eq 0 ]]; then
     echo "%{%F{1}%} # %{%f%} "
   else
-    echo "%{%F{12}%} - %{%f%} "
+    if [[ ! -n "$VIRTUAL_ENV" ]]; then
+      echo "%{%F{12}%} - %{%f%} "
+    else
+      echo "%{%F{1}%} - %{%f%} "
+    fi
   fi
 }
 prompt_cwd() {
@@ -58,7 +62,7 @@ prompt_git() {
   fi
 }
 prompt_dir() {
-  insert_indicator="%{%F{4}%}+%{%f%} "
+  local insert_indicator="%{%F{4}%}+%{%f%} "
   if [[ $PWD = $HOME ]] ; then
     echo "${${KEYMAP/vicmd/$insert_indicator}/(main|viins)/} %{%K{2}%F{0}%} ~ %{%f%k%}"
   else
